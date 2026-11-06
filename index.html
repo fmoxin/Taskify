@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+      /* Reset */
+      *,
+      *::before,
+      *::after {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      /* Body */
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        font-family: "Poppins", sans-serif;
+
+        background:
+          radial-gradient(circle at 20% 20%, #253d78, transparent 40%),
+          radial-gradient(circle at 80% 80%, #44236d, transparent 40%), #090e1b;
+      }
+
+      /* Todo Container */
+      .todo {
+        width: 100%;
+        max-width: 550px;
+        padding: 35px;
+        border-radius: 24px;
+
+        background: rgba(22, 30, 52, 0.9);
+        border: 1px solid rgba(151, 164, 255, 0.2);
+
+        backdrop-filter: blur(20px);
+
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.4),
+          0 0 40px rgba(110, 75, 255, 0.12);
+
+        animation: fadeIn 0.7s ease;
+      }
+
+      /* Input Row */
+      .todo > .row {
+        width: 100%;
+        height: 60px;
+        display: flex;
+        gap: 12px;
+        margin-bottom: 25px;
+      }
+
+      /* Text Input */
+      .todo .row input {
+        flex: 1;
+        min-width: 0;
+        padding: 0 18px;
+
+        border: 1px solid #344365;
+        border-radius: 12px;
+        outline: none;
+
+        background: #101a2e;
+        color: #ffffff;
+
+        font-family: inherit;
+        font-size: 14px;
+
+        transition: all 0.3s ease;
+      }
+
+      .todo .row input::placeholder {
+        color: #8290ad;
+      }
+
+      .todo .row input:focus {
+        border-color: #9b70ff;
+        box-shadow: 0 0 18px rgba(139, 92, 246, 0.3);
+      }
+
+      /* Add Button */
+      .todo .row button {
+        padding: 0 30px;
+
+        border: none;
+        border-radius: 12px;
+
+        background: linear-gradient(135deg, #2878ff, #7552ee);
+        color: white;
+
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 600;
+
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .todo .row button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(82, 91, 255, 0.45);
+      }
+
+      .todo .row button:active {
+        transform: scale(0.95);
+      }
+
+      /* Task List */
+      .todo ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        overflow: hidden;
+      }
+
+      /* Task Item */
+      .todo ul li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        padding: 17px 15px;
+        border-radius: 14px;
+
+        background: #1b2942;
+        border: 1px solid #34415d;
+
+        transition: all 1s ease;
+      }
+
+      .todo ul li:hover {
+        background: #223352;
+        border-color: #7552ee;
+        transform: translateY(-2px);
+      }
+
+      /* Task Text */
+      .todo ul li h4 {
+        transition: 0.4s;
+        flex: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
+
+        color: #f0f3ff;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      /* Action Spans */
+      .todo ul li span {
+        padding: 8px 12px;
+        border-radius: 8px;
+
+        font-size: 12px;
+        font-weight: 500;
+
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.3s ease;
+      }
+
+      /* First Edit */
+      .todo ul li span:first-of-type {
+        background: rgba(47, 130, 255, 0.15);
+        color: #70b4ff;
+      }
+
+      .todo ul li span:first-of-type:hover {
+        background: #2878ff;
+        color: #fff;
+      }
+
+      /* Second Action */
+      .todo ul li span:last-of-type {
+        background: rgba(255, 75, 110, 0.13);
+        color: #ff7896;
+      }
+
+      .todo ul li span:last-of-type:hover {
+        background: #f43f5e;
+        color: white;
+      }
+
+      /* Custom Checkbox */
+      .todo ul li input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+
+        width: 23px;
+        height: 23px;
+        flex-shrink: 0;
+
+        border: 2px solid #7186b0;
+        border-radius: 7px;
+        background: #101a2e;
+
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .todo ul li input[type="checkbox"]:hover {
+        border-color: #a78bfa;
+        box-shadow: 0 0 12px rgba(167, 139, 250, 0.3);
+      }
+
+      /* Checked */
+      .todo ul li input[type="checkbox"]:checked {
+        background: linear-gradient(135deg, #2878ff, #8b5cf6);
+        border-color: #8b5cf6;
+      }
+
+      /* Checkmark */
+      .todo ul li input[type="checkbox"]:checked::after {
+        content: "✓";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+      }
+
+      /* حذف شده - پرتاب به بیرون با ترنزیشن ۱ ثانیه‌ای */
+      .todo ul li.del {
+        transform: translateX(-2000px);
+        opacity: 0;
+      }
+
+      /* استایل خط زدن متن */
+      .tik {
+        text-decoration: line-through;
+        color: #8290ad !important;
+        opacity: 0.6;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="todo">
+      <div class="row">
+        <input type="text" placeholder="write text" />
+        <button>add</button>
+      </div>
+      <ul>
+        <li>
+          <h4>To do list project</h4>
+          <span onclick="myEdit(this)">edit</span>
+          <span onclick="myDel(this)">remove</span>
+          <input onchange="myTik(this)" type="checkbox" />
+        </li>
+      </ul>
+    </div>
+  </body>
+  <script>
+    const inp = document.querySelector(".row input");
+    const btn = document.querySelector("button");
+    const list = document.querySelector("ul");
+
+    // check local storage
+    let arr = [];
+
+    try {
+      let tempLocal = JSON.parse(localStorage.getItem("db"));
+
+      if (Array.isArray(tempLocal)) {
+        arr = tempLocal
+          .filter((item) => item && typeof item === "object")
+          .map((item) => ({
+            id: item.id || crypto.randomUUID(),
+            name: String(item.name || "").trim(),
+            tik: item.tik === true,
+          }))
+          .filter((item) => item.name !== "");
+      }
+    } catch (error) {
+      arr = [];
+    }
+
+    // save local storage
+    function saveLocal() {
+      localStorage.setItem("db", JSON.stringify(arr));
+    }
+
+    // show tasks
+    function showTasks() {
+      list.innerHTML = "";
+
+      arr.forEach((item) => {
+        let li = document.createElement("li");
+
+        li.dataset.id = item.id;
+
+        li.innerHTML = `
+      <h4></h4>
+      <span onclick="myEdit(this)">edit</span>
+      <span onclick="myDel(this)">remove</span>
+      <input onchange="myTik(this)" type="checkbox" />
+    `;
+
+        li.querySelector("h4").textContent = item.name;
+
+        if (item.tik) {
+          li.querySelector("input").checked = true;
+          li.querySelector("h4").classList.add("tik");
+        }
+
+        list.appendChild(li);
+      });
+    }
+
+    // add task
+    function addTask() {
+      let tempvalue = inp.value.trim();
+
+      if (tempvalue == "") {
+        inp.focus();
+        return;
+      }
+
+      let task = {
+        id: crypto.randomUUID(),
+        name: tempvalue,
+        tik: false,
+      };
+
+      arr.push(task);
+
+      saveLocal();
+      showTasks();
+
+      inp.value = "";
+      inp.focus();
+    }
+
+    // click button
+    btn.addEventListener("click", () => {
+      addTask();
+    });
+
+    // press Enter
+    inp.addEventListener("keydown", (e) => {
+      if (e.key == "Enter" && !e.isComposing) {
+        e.preventDefault();
+        addTask();
+      }
+    });
+
+    // delete task
+    function myDel(s) {
+      if (confirm("Are you sure for this??")) {
+        let li = s.parentElement;
+        let id = li.dataset.id;
+
+        if (li.classList.contains("del")) return;
+
+        li.classList.add("del");
+
+        arr = arr.filter((item) => item.id != id);
+        saveLocal();
+
+        setTimeout(() => {
+          li.remove();
+        }, 1000);
+      }
+    }
+
+    // checkbox
+    function myTik(s) {
+      let li = s.parentElement;
+      let id = li.dataset.id;
+      let h4 = li.querySelector("h4");
+
+      let index = arr.findIndex((item) => item.id == id);
+
+      if (index == -1) return;
+
+      if (s.checked) {
+        h4.classList.add("tik");
+        arr[index].tik = true;
+      } else {
+        h4.classList.remove("tik");
+        arr[index].tik = false;
+      }
+
+      saveLocal();
+    }
+
+    // edit task
+    function myEdit(s) {
+      let li = s.parentElement;
+      let id = li.dataset.id;
+
+      let index = arr.findIndex((item) => item.id == id);
+
+      if (index == -1) return;
+
+      let name = arr[index].name;
+      let newname = prompt("please change it " + name, name);
+
+      if (newname == null) return;
+
+      newname = newname.trim();
+
+      if (newname == "") {
+        alert("por kon...");
+        return;
+      }
+
+      arr[index].name = newname;
+
+      li.querySelector("h4").textContent = newname;
+
+      saveLocal();
+    }
+
+    // show saved tasks when page loads
+    showTasks();
+  </script>
+</html>
